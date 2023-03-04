@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: dev
+  config:
+    import: optional:secrets.yaml
+
+---
+
+spring:
+  application:
+    name: crm_orders
+  config:
+    activate:
+      on-profile: dev
+    import: configserver:http://localhost:3500
+  cloud:
+    config:
+      fail-fast: true
+      name: "crm_orders"
+  data:
+  datasource:
+    url: jdbc:postgres://localhost:3506/crm_orders?schema=public
+  flyway:
+    enabled: true
+    url: ${spring.datasource.url}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+server:
+  port: 3503
+  servlet:
+    context-path: /api
+logging:
+  file:
+    name: log.txt
+  level:
+    org:
+      springframework: info
+app:
+  all-methods-log:
+    enabled: true

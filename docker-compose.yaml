@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+#  crm_orders:
+#    container_name: crm_orders
+#    build:
+#      dockerfile: Dockerfile
+#    image: orders:latest
+#    ports:
+#      - 3503:3503
+#    depends_on:
+#      - postgres
+#    networks:
+#      - crm-network
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "crm_orders"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+    networks:
+      - crm-network
+    ports:
+      - "3506:3506"
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
+networks:
+  crm-network:
+    driver: bridge
