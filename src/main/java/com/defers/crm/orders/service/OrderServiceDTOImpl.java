@@ -6,11 +6,13 @@ import com.defers.crm.orders.mapper.OrderDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Transactional(readOnly = true)
 @Service
 public class OrderServiceDTOImpl implements OderServiceDTO {
 
@@ -48,12 +50,15 @@ public class OrderServiceDTOImpl implements OderServiceDTO {
 
     @Override
     public OrderDTOResponse findDTOById(int id) {
-        return null;
+        return orderDTOResponseMapper.convertToDto(orderService.findById(id));
     }
 
 
+    @Transactional(readOnly = false)
     @Override
     public OrderDTOResponse save(OrderDTORequest orderDTORequest) {
-        return null;
+        var order = orderDTORequestMapper.convertToEntity(orderDTORequest);
+        order = orderService.save(order);
+        return orderDTOResponseMapper.convertToDto(order);
     }
 }

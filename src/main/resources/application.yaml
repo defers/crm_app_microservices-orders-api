@@ -19,7 +19,7 @@ spring:
       name: "crm_orders"
   data:
   datasource:
-    url: jdbc:postgresql://localhost:3506/crm_orders?schema=public
+    url: jdbc:postgresql://localhost:3506/crm_orders?currentSchema=public
   flyway:
     enabled: true
     url: ${spring.datasource.url}
@@ -28,6 +28,9 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+    properties:
+      hibernate:
+        default_schema: public
 server:
   port: 3503
   servlet:
@@ -38,6 +41,13 @@ logging:
   level:
     org:
       springframework: info
+      hibernate:
+        type: trace
 app:
   all-methods-log:
     enabled: true
+springdoc:
+  show-actuator: true
+management:
+  server:
+    port: 9090

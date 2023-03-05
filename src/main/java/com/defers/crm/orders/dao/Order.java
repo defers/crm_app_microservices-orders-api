@@ -1,18 +1,22 @@
 package com.defers.crm.orders.dao;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Data
 @SuperBuilder
 @Entity
 @Table(name = "order")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order extends BaseEntity {
     @Id
     @SequenceGenerator(name = "order_id_generator", sequenceName = "order_id_seq", allocationSize = 1)
@@ -23,8 +27,7 @@ public class Order extends BaseEntity {
     @Column(name = "customer_id")
     private String customerId;
     private String description;
-    @Size(min = 0)
+    @DecimalMin(value = "0.0")
+    @Column(precision=10, scale=2)
     private BigDecimal sum;
-
-
 }
