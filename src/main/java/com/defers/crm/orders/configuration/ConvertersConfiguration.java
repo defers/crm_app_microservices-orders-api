@@ -23,15 +23,15 @@ public class ConvertersConfiguration {
     }
 
     @Bean
-    public OrderDTOMapper<OrderDTORequest> userDTOMapperRequest(RoleRepository roleRepository) {
+    public OrderDTOMapper<OrderDTORequest> userDTOMapperRequest() {
         return new OrderDTOMapper<>(modelMapper(), Order.class,
-                OrderDTORequest.class, roleRepository);
+                OrderDTORequest.class);
     }
 
     @Bean
-    public OrderDTOMapper<OrderDTOResponse> userDTOMapperResponse(RoleRepository roleRepository) {
+    public OrderDTOMapper<OrderDTOResponse> userDTOMapperResponse() {
         return new OrderDTOMapper<>(modelMapper(), Order.class,
-                OrderDTOResponse.class, roleRepository);
+                OrderDTOResponse.class);
     }
 
 }

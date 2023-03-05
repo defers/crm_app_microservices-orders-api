@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,8 +18,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
     @CreatedDate
+    @Column(name = "created_date")
     LocalDateTime createdDate;
     @LastModifiedDate
+    @Column(name = "updated_date")
     LocalDateTime updatedDate;
     boolean deleted;
 }

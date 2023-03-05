@@ -12,7 +12,7 @@ services:
 #    networks:
 #      - crm-network
   postgres:
-    image: postgres:latest
+    image: postgres:15.1
     environment:
       POSTGRES_DB: "crm_orders"
       POSTGRES_USER: "admin"
@@ -20,7 +20,7 @@ services:
     networks:
       - crm-network
     ports:
-      - "3506:3506"
+      - "3506:5432"
     volumes:
       - db:/var/lib/postgresql/data
 volumes:

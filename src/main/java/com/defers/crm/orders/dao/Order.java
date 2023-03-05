@@ -15,11 +15,12 @@ import java.math.BigDecimal;
 @Table(name = "order")
 public class Order extends BaseEntity {
     @Id
-    @SequenceGenerator(name = "order_id_generator", sequenceName = "order_id_seq")
+    @SequenceGenerator(name = "order_id_generator", sequenceName = "order_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_generator")
-    private long id;
+    private int id;
     @NotNull
     @NotBlank
+    @Column(name = "customer_id")
     private String customerId;
     private String description;
     @Size(min = 0)

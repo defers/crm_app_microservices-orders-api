@@ -1,9 +1,8 @@
 package com.defers.crm.orders.configuration;
 
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@EnableSwagger2
+//@EnableSwagger2 // TODO
 @Configuration
 public class SwaggerConfiguration {
 }

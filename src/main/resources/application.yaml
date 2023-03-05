@@ -19,10 +19,11 @@ spring:
       name: "crm_orders"
   data:
   datasource:
-    url: jdbc:postgres://localhost:3506/crm_orders?schema=public
+    url: jdbc:postgresql://localhost:3506/crm_orders?schema=public
   flyway:
     enabled: true
     url: ${spring.datasource.url}
+    validate-migration-naming: true
   jpa:
     hibernate:
       ddl-auto: validate
