@@ -8,7 +8,7 @@ spring:
 
 spring:
   application:
-    name: crm_orders
+    name: crm-orders
   config:
     activate:
       on-profile: dev
@@ -16,7 +16,7 @@ spring:
   cloud:
     config:
       fail-fast: true
-      name: "crm_orders"
+      name: "crm-orders"
   data:
   datasource:
     url: jdbc:postgresql://localhost:3506/crm_orders?currentSchema=public
@@ -35,6 +35,12 @@ server:
   port: 3503
   servlet:
     context-path: /api
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      default-zone: http://localhost:8761/eureka/
 logging:
   file:
     name: log.txt
@@ -51,3 +57,15 @@ springdoc:
 management:
   server:
     port: 9090
+feign:
+  client:
+    config:
+      crm-customers-microservice:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: FULL
+        decode404: false
+restclient:
+  crm-customers-microservice:
+    name: crm-customers
+    basepath: /api/v1/customers
