@@ -69,3 +69,5 @@ restclient:
   crm-customers-microservice:
     name: crm-customers
     basepath: /api/v1/customers
+
+

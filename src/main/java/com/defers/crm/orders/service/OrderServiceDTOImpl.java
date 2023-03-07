@@ -46,10 +46,10 @@ public class OrderServiceDTOImpl implements OderServiceDTO {
     @Override
     public List<OrderDTOResponse> findAllDTO(Integer pageNumber, Integer numberOnPage) {
         if (Objects.isNull(pageNumber)) {
-            pageNumber = defaultPageNumber;
+            pageNumber = Objects.isNull(defaultPageNumber) ? 0 : defaultPageNumber;
         }
         if (Objects.isNull(numberOnPage)) {
-            numberOnPage = defaultNumberOnPage;
+            numberOnPage = Objects.isNull(defaultNumberOnPage) ? 10 : defaultNumberOnPage;
         }
         return orderService.findAll(pageNumber, numberOnPage).stream()
                 .map(e -> {

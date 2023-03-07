@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: test
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+app:
+  data:
+    default-page-number: 5
+    default-number-on-page: 12

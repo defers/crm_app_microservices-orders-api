@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,10 +24,10 @@ public class OrderController {
     private OrderServiceDTOImpl orderServiceDTO;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<List<OrderDTOResponse>> getAll(
-            @RequestParam(required = false, defaultValue = "${app.data.default-page-number}") Integer pageNumber,
-            @RequestParam(required = false, defaultValue = "${app.data.default-number-on-page}") Integer numberOnPage
+            @RequestParam(required = false, name = "pagenumber") Integer pageNumber,
+            @RequestParam(required = false, name = "numberonpage") Integer numberOnPage
     ) {
         return ApiResponse.<List<OrderDTOResponse>>builder()
                 .responseApiStatus(ResponseApiStatus.OK)
