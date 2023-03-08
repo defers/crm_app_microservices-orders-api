@@ -1,20 +1,35 @@
 package com.defers.crm.orders.controller;
 
+import com.defers.crm.orders.dto.ApiResponse;
 import com.defers.crm.orders.dto.CustomerDTO;
+import com.defers.crm.orders.dto.OrderDTORequest;
 import com.defers.crm.orders.dto.OrderDTOResponse;
+import com.defers.crm.orders.enums.ResponseApiStatus;
 import com.defers.crm.orders.service.OrderServiceDTOImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.MultiValueMapAdapter;
@@ -25,8 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
+@TestPropertySource(locations = "classpath:application-test.yml")
 class OrderControllerCustomMockMVCTest {
 
     private MockMvc mvc;
@@ -36,6 +53,23 @@ class OrderControllerCustomMockMVCTest {
     @Autowired
     @InjectMocks
     private OrderController orderController;
+    private ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new ParameterNamesModule())
+            .registerModule(new Jdk8Module())
+            .registerModule(new JavaTimeModule());
+
+    @TestConfiguration
+    public static class OrderControllerTestConfig {
+        @Bean
+        public ObjectMapper objectMapper() {
+            return new ObjectMapper();
+        }
+
+    }
+
+    @BeforeAll
+    public static void setUpBeforeAll() {
+    }
 
     @BeforeEach
     public void setUp() {
@@ -90,10 +124,42 @@ class OrderControllerCustomMockMVCTest {
     }
 
     @Test
-    void save() {
+    void save() throws Exception {
+        String customerId = "fa994eca-23b4-4cb2-abed-cf7d16fa3735";
+        OrderDTORequest orderDTO1 = OrderDTORequest.builder()
+                .id(1)
+                .description("info order 1")
+                .sum(BigDecimal.valueOf(1000))
+                .customerId(customerId)
+                .build();
+
+        ApiResponse<OrderDTOResponse> expectedResponse = ApiResponse.<OrderDTOResponse>builder()
+                .responseApiStatus(ResponseApiStatus.OK)
+                .data(ordersDTOs.get(0))
+                .build();
+
+        String orderString = objectMapper.writeValueAsString(orderDTO1);
+
+        BDDMockito.given(orderService.save(orderDTO1))
+                .willReturn(ordersDTOs.get(0));
+
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post("/v1/orders")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(orderString))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(1))
+                .andReturn();
+
+        String responseContent = mvcResult.getResponse().getContentAsString();
+        JSONAssert.assertEquals(null,
+                objectMapper.writeValueAsString(expectedResponse),
+                responseContent,
+                true);
     }
 
     @Test
     void getById() {
     }
+
 }

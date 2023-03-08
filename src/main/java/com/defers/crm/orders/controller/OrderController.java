@@ -36,7 +36,7 @@ public class OrderController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<OrderDTOResponse> save(@RequestBody @Valid OrderDTORequest orderDTORequest) {
         return ApiResponse.<OrderDTOResponse>builder()
                 .responseApiStatus(ResponseApiStatus.OK)
