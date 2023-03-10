@@ -7,6 +7,7 @@ import com.defers.crm.orders.mapper.OrderDTOMapper;
 import com.defers.crm.orders.restservice.CustomerRestService;
 import com.defers.crm.orders.util.ExceptionUtils;
 import com.defers.crm.orders.util.MessagesUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
+@Slf4j
 @Service
 public class OrderServiceDTOImpl implements OderServiceDTO {
 
@@ -85,6 +87,7 @@ public class OrderServiceDTOImpl implements OderServiceDTO {
     @Transactional(readOnly = false)
     @Override
     public OrderDTOResponse save(OrderDTORequest orderDTORequest) {
+        log.info("saving... " + orderDTORequest);
         var order = orderDTORequestMapper.convertToEntity(orderDTORequest);
         checkCustomer(orderDTORequest.getCustomerId());
         order = orderService.save(order);

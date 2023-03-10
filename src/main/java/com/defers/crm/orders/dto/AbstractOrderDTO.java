@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AbstractOrderDTO {
-    private long id;
+    private int id;
     @NotBlank
     @NotNull
     private String description;

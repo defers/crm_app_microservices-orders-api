@@ -124,7 +124,7 @@ class OrderControllerCustomMockMVCTest {
     }
 
     @Test
-    void save() throws Exception {
+    void save_ShouldReturnSavedDTOWhenSaved() throws Exception {
         String customerId = "fa994eca-23b4-4cb2-abed-cf7d16fa3735";
         OrderDTORequest orderDTO1 = OrderDTORequest.builder()
                 .id(1)
@@ -159,7 +159,23 @@ class OrderControllerCustomMockMVCTest {
     }
 
     @Test
-    void getById() {
+    void getById_ShouldReturnDTOFoundByIdWhenFindById() throws Exception {
+
+        OrderDTOResponse orderDTOResponse = ordersDTOs.get(0);
+        int id = orderDTOResponse.getId();
+
+        Mockito.when(orderService.findDTOById(id))
+                .thenReturn(orderDTOResponse);
+
+        mvc.perform(MockMvcRequestBuilders.get(String.format("/v1/orders/%s", id))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isNotEmpty())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.id")
+                        .value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data.description")
+                        .value(orderDTOResponse.getDescription()));
     }
 
 }

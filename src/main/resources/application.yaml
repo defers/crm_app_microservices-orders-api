@@ -31,6 +31,17 @@ spring:
     properties:
       hibernate:
         default_schema: public
+  sleuth:
+    enabled: true
+    web:
+      enabled: true
+  zipkin:
+    base-url: http://localhost:9411/
+    enabled: true
+    discovery-client-enabled: true
+    locator:
+      discovery:
+        enabled: true
 server:
   port: 3503
   servlet:
@@ -69,5 +80,4 @@ restclient:
   crm-customers-microservice:
     name: crm-customers
     basepath: /api/v1/customers
-
 
