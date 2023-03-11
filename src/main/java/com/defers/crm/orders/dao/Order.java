@@ -14,13 +14,13 @@ import java.math.BigDecimal;
 @Data
 @SuperBuilder
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order extends BaseEntity {
     @Id
-    @SequenceGenerator(name = "order_id_generator", sequenceName = "order_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_generator")
+    @SequenceGenerator(name = "orders_id_generator", sequenceName = "orders_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_id_generator")
     private int id;
     @NotNull
     @NotBlank

@@ -1,12 +1,25 @@
-spring:
-  profiles:
-    active: test
----
+#spring:
+#  profiles:
+#    active: test
+#---
 spring:
   config:
     activate:
       on-profile: test
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create
+  cloud:
+    config:
+      enabled: false
 app:
   data:
     default-page-number: 5
     default-number-on-page: 12
+
+restclient:
+  crm-customers-microservice:
+    name: crm-customers
+    basepath: /api/v1/customers

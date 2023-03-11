@@ -12,7 +12,7 @@ spring:
   config:
     activate:
       on-profile: dev
-    import: configserver:http://localhost:3500
+    import: optional:configserver:http://localhost:3500
   cloud:
     config:
       fail-fast: true
